@@ -16,9 +16,15 @@ fn main() {
                 ..
             } => {
                 tauri_plugin_positioner::on_tray_event(app, &event);
-                let window = app.app_handle().get_window("main").unwrap();
-                window.show().unwrap();
-                window.move_window(Position::TrayCenter).unwrap();
+                let window = app.get_window("main").unwrap();
+                // use TrayCenter as initial window position
+                let _ = window.move_window(Position::TrayCenter);
+                if window.is_visible().unwrap() {
+                    window.hide().unwrap();
+                } else {
+                    window.show().unwrap();
+                    window.set_focus().unwrap();
+                }
             }
             _ => {}
         })
