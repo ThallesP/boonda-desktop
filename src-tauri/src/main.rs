@@ -1,20 +1,25 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
-use tauri::api::dialog::FileDialogBuilder;
-use tauri::{SystemTray, SystemTrayEvent};
+use tauri::{Manager, SystemTray, SystemTrayEvent};
+use tauri_plugin_positioner::Position;
+use tauri_plugin_positioner::WindowExt;
 
 fn main() {
     let tray = SystemTray::new();
     tauri::Builder::default()
+        .plugin(tauri_plugin_positioner::init())
         .system_tray(tray)
         .on_system_tray_event(|app, event| match event {
             SystemTrayEvent::LeftClick {
                 position: _,
                 size: _,
                 ..
-            } => FileDialogBuilder::new()
-                .set_title("Select a file to upload")
-                .pick_file(|file_path| println!("{:?}", file_path)),
+            } => {
+                tauri_plugin_positioner::on_tray_event(app, &event);
+                let window = app.app_handle().get_window("main").unwrap();
+                window.show().unwrap();
+                window.move_window(Position::TrayCenter).unwrap();
+            }
             _ => {}
         })
         .run(tauri::generate_context!())
