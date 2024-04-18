@@ -20,6 +20,10 @@
         "all": false,
         "open": true
       },
+      "window": {
+        "hide": true,
+        "close": true
+      },
       "clipboard": {
         "all": true,
         "writeText": true,
@@ -29,11 +33,11 @@
     "windows": [
       {
         "title": "boonda-desktop",
-        "width": 300,
+        "width": 250,
         "visible": false,
         "alwaysOnTop": true,
         "decorations": false,
-        "height": 350
+        "height": 310
       }
     ],
     "security": {

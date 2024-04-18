@@ -5,6 +5,6 @@ import Auth from "./Auth";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <Auth />
+    <App />
   </React.StrictMode>
 );

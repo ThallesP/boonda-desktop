@@ -1,22 +1,22 @@
-import { Button } from '@/components/ui/button';
-import { Dropzone } from '@/components/ui/dropzone';
+import { Button } from "@/components/ui/button";
+import { Dropzone } from "@/components/ui/dropzone";
 import {
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from '@/components/ui/form';
-import { useUpload } from '@/hooks/use-upload';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Loader } from 'lucide-react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { MAX_ANON_SIZE_BYTES, MAX_LOGGED_SIZE_BYTES } from '@/lib/constants';
-import { writeText } from '@tauri-apps/api/clipboard';
-import { useRef, useState } from 'react';
-import { Copy, Check } from 'lucide-react';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
+} from "@/components/ui/form";
+import { useUpload } from "@/hooks/use-upload";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader } from "lucide-react";
+import { FormProvider, useForm } from "react-hook-form";
+import { z } from "zod";
+import { MAX_ANON_SIZE_BYTES, MAX_LOGGED_SIZE_BYTES } from "@/lib/constants";
+import { writeText } from "@tauri-apps/api/clipboard";
+import { useRef, useState } from "react";
+import { Copy, Check } from "lucide-react";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
 
 const UploadSchema = z.object({
   file: z.instanceof(File).nullable(),
@@ -49,20 +49,20 @@ export function UploadComponent() {
       // const maxSize = data ? MAX_LOGGED_SIZE_BYTES : MAX_ANON_SIZE_BYTES;
       const maxSize = MAX_LOGGED_SIZE_BYTES;
       if (acceptedFiles[0].size > maxSize) {
-        form.setValue('file', null);
-        return form.setError('file', {
-          message: 'File is too big',
-          type: 'typeError',
+        form.setValue("file", null);
+        return form.setError("file", {
+          message: "File is too big",
+          type: "typeError",
         });
       }
 
-      form.setValue('file', acceptedFiles[0]);
-      form.clearErrors('file');
+      form.setValue("file", acceptedFiles[0]);
+      form.clearErrors("file");
     } else {
-      form.setValue('file', null);
-      form.setError('file', {
-        message: 'File is required',
-        type: 'typeError',
+      form.setValue("file", null);
+      form.setError("file", {
+        message: "File is required",
+        type: "typeError",
       });
     }
   }
@@ -90,7 +90,7 @@ export function UploadComponent() {
       clearTimeout(copiedTimeoutRef.current);
     }
 
-    await writeText(inputRef.current?.value || '');
+    await writeText(inputRef.current?.value || "");
     setIsCopied(true);
     const t = setTimeout(() => {
       setIsCopied(false);
@@ -116,7 +116,7 @@ export function UploadComponent() {
                 <FormControl>
                   <Dropzone
                     {...field}
-                    classNameWrapper="bg-zinc-950/55 border-0 hover:bg-zinc-950/65 transition-colors backdrop-blur-md"
+                    classNameWrapper="bg-zinc-800/30 border-0 hover:bg-zinc-800/40 transition-colors backdrop-blur-md"
                     dropMessage="Drag and drop a file or click to select one"
                     // isLoggedIn={!!data}
                     isLoggedIn={true}
@@ -131,7 +131,7 @@ export function UploadComponent() {
             <Button
               className="w-full opacity-100"
               type="submit"
-              disabled={!form.watch('file') && !isUploading}
+              disabled={!form.watch("file") && !isUploading}
             >
               {isUploading && <Loader className="size-4 animate-spin mr-2" />}
               Upload
@@ -180,11 +180,11 @@ export function UploadComponent() {
             <Label className="text-muted-foreground">File Expiration</Label>
             <p className="text-background">
               {new Date(uploadedURLDuration).toLocaleDateString(undefined, {
-                day: '2-digit',
-                month: 'long',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
+                day: "2-digit",
+                month: "long",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
               })}
             </p>
           </div>
