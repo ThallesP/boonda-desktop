@@ -1,5 +1,4 @@
 import './globals.css';
-import { UnlockHigherLimits } from './components/unlock-higher-limits';
 import { UploadComponent } from './components/upload-component';
 import { TanStackQueryProvider } from './providers/tanstack-query-provider';
 

@@ -90,9 +90,8 @@ export function UploadComponent() {
       clearTimeout(copiedTimeoutRef.current);
     }
 
-    await clipboard.write(fileURL);
+    await writeText(inputRef.current?.value || '');
     setIsCopied(true);
-    toast.success('Copied to clipboard');
     const t = setTimeout(() => {
       setIsCopied(false);
     }, 3000);
@@ -101,7 +100,7 @@ export function UploadComponent() {
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 bg-zinc-950/55 p-4">
       <FormProvider {...form}>
         <form
           className="flex flex-col items-center justify-center w-full min-h-36 gap-2 z-[1] relative"
@@ -145,7 +144,7 @@ export function UploadComponent() {
         </form>
       </FormProvider>
 
-      {uploadedURL && (
+      {uploadedURL && uploadedURLDuration != null && (
         <>
           <div className="flex flex-col gap-2">
             <Label className="text-muted-foreground">File URL</Label>
@@ -179,7 +178,15 @@ export function UploadComponent() {
           </div>
           <div className="flex flex-col gap-2">
             <Label className="text-muted-foreground">File Expiration</Label>
-            <p>{new Date(uploadedURLDuration).toLocaleDateString()}</p>
+            <p className="text-background">
+              {new Date(uploadedURLDuration).toLocaleDateString(undefined, {
+                day: '2-digit',
+                month: 'long',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+              })}
+            </p>
           </div>
         </>
       )}
