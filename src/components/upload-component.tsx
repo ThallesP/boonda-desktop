@@ -17,6 +17,7 @@ import { useRef, useState } from "react";
 import { Copy, Check } from "lucide-react";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
+import { useSession } from "@/hooks/use-session";
 
 const UploadSchema = z.object({
   file: z.instanceof(File).nullable(),
@@ -31,6 +32,7 @@ export function UploadComponent() {
     null
   );
   const { mutate: upload, isPending: isUploading } = useUpload();
+  const { data, isPending } = useSession();
 
   const defaultValues: { file: null | File } = {
     file: null,
@@ -46,8 +48,7 @@ export function UploadComponent() {
 
   function handleOnDrop(acceptedFiles: FileList | null) {
     if (acceptedFiles && acceptedFiles.length > 0) {
-      // const maxSize = data ? MAX_LOGGED_SIZE_BYTES : MAX_ANON_SIZE_BYTES;
-      const maxSize = MAX_LOGGED_SIZE_BYTES;
+      const maxSize = data ? MAX_LOGGED_SIZE_BYTES : MAX_ANON_SIZE_BYTES;
       if (acceptedFiles[0].size > maxSize) {
         form.setValue("file", null);
         return form.setError("file", {
@@ -118,8 +119,7 @@ export function UploadComponent() {
                     {...field}
                     classNameWrapper="bg-zinc-800/30 border-0 hover:bg-zinc-800/40 transition-colors backdrop-blur-md"
                     dropMessage="Drag and drop a file or click to select one"
-                    // isLoggedIn={!!data}
-                    isLoggedIn={true}
+                    isLoggedIn={!isPending && !!data}
                     handleOnDrop={handleOnDrop}
                   />
                 </FormControl>

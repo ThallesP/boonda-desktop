@@ -2,7 +2,35 @@ import "./globals.css";
 import { UploadComponent } from "./components/upload-component";
 import { TanStackQueryProvider } from "./providers/tanstack-query-provider";
 import { X } from "lucide-react";
+import { listen } from "@tauri-apps/api/event";
 import { appWindow } from "@tauri-apps/api/window";
+import { open } from "@tauri-apps/api/shell";
+import { invoke } from "@tauri-apps/api";
+import { createClient } from "./utils/supabase/client";
+
+export type Tokens = {
+  payload: {
+    access_token: string;
+    refresh_token: string;
+  };
+};
+
+listen("login-tokens", async (data: Tokens) => {
+  const { access_token, refresh_token } = data.payload;
+  const client = createClient();
+  await client.auth.setSession({
+    access_token,
+    refresh_token,
+  });
+  localStorage.setItem("isLogged", "true");
+  window.location.reload();
+});
+
+listen("login-requested", async () => {
+  const port = await invoke("setup_callback");
+  await open("http://localhost:3000/desktop-sign-in?port=" + port);
+});
+
 function App() {
   return (
     <TanStackQueryProvider>
