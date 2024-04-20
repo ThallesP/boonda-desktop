@@ -12,8 +12,11 @@ use tauri_plugin_positioner::Position;
 use tauri_plugin_positioner::WindowExt;
 
 fn main() {
-    let tray = SystemTray::new()
-        .with_menu(SystemTrayMenu::new().add_item(CustomMenuItem::new("login", "Login")));
+    let tray = SystemTray::new().with_menu(
+        SystemTrayMenu::new()
+            .add_item(CustomMenuItem::new("login", "Login"))
+            .add_item(CustomMenuItem::new("quit", "Quit")),
+    );
     tauri::Builder::default()
         .plugin(tauri_plugin_positioner::init())
         .system_tray(tray)
@@ -41,6 +44,9 @@ fn main() {
             SystemTrayEvent::MenuItemClick { id, .. } => match id.as_str() {
                 "login" => {
                     let _ = app.emit_all("login-requested", "");
+                }
+                "quit" => {
+                    app.exit(0);
                 }
                 _ => {}
             },
