@@ -68,15 +68,6 @@ export function AuthForm({ intent }: AuthFormProps) {
       ? "Sign in to your account right now."
       : "Create your account right now.";
 
-  const accountHelperText =
-    intent === "sign-in"
-      ? "Don’t have an account?"
-      : "Already have an account?";
-
-  const logMessage = intent === "sign-in" ? "Sign Up" : "Sign In";
-  const logMessageRedirectRoute =
-    intent === "sign-in" ? "/sign-up" : "/sign-in";
-
   return (
     <Card className="max-w-[516px] w-full relative bg-zinc-950">
       <div
