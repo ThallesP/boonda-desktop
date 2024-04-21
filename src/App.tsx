@@ -7,6 +7,7 @@ import { appWindow } from "@tauri-apps/api/window";
 import { open } from "@tauri-apps/api/shell";
 import { invoke } from "@tauri-apps/api";
 import { createClient } from "./utils/supabase/client";
+import { DEFAULT_URL } from "./lib/constants";
 
 export type Tokens = {
   payload: {
@@ -28,7 +29,7 @@ listen("login-tokens", async (data: Tokens) => {
 
 listen("login-requested", async () => {
   const port = await invoke("setup_callback");
-  await open("http://localhost:3000/desktop-sign-in?port=" + port);
+  await open(`${DEFAULT_URL}/desktop-sign-in?port=` + port);
 });
 
 function App() {
